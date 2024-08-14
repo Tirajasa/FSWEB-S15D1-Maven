@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Scanner;
 
-import static jdk.internal.org.jline.reader.impl.LineReaderImpl.CompletionType.List;
+
 
 public class Grocery {
     public static ArrayList<String> groceryList=new ArrayList<>();
@@ -13,60 +13,75 @@ public class Grocery {
 
 
     Scanner scanner=new Scanner(System.in);
-    public void setGroceryList(){
+    public void startGrocery(){
         int choice;
+
         do{
+
             System.out.println("Yapilmak istenen operasyonu seciniz.0=cikis,1= ekle,2=cikar");
-    choice=scanner.nextInt();
-    scanner.nextLine();
-        }while(choice!=0){
+
+            choice=scanner.nextInt();
+             scanner.nextLine();
+
+
             switch (choice){
                 case 1:
                     System.out.println("Eklenmesini istediğiniz elemanları giriniz.");
                     String itemsToAdd=scanner.nextLine();
                     addItems(itemsToAdd);
+                    printSorted();
                     break;
                 case 2:
                     System.out.println("Cıkarılmasını istediğiniz elemanları giriniz.");
                     String itemsToRemove=scanner.nextLine();
-                    addItems(itemsToRemove);
+                    removeItems(itemsToRemove);
+                    printSorted();
+                    break;
+                default:
+                        System.out.println("Lutfen verilen secim yonlendirmelerine uygun hareket ediniz. ");
                     break;
             }
 
         }
-        while(choice!=0);
-        //Important!!!
-        scanner.close();
+        while(choice!=0) ;
+
+            //Important!!!
+            scanner.close();
     }
-        private void addItems(String itemstoAdd){
-    String[] splitItems=itemstoAdd.split(",");
+        public static void addItems(String itemstoAdd){
+        String[] splitItems=itemstoAdd.split(",");
         for(String item:splitItems){
             item=item.trim();
             if(checkItemsInList(item)){
-                System.out.println("girilen item listede mevcut"+ item);
+                System.out.println("girilen item listede mevcut"+" " +item);
+
             }else{
                 groceryList.add(item);
             }
+
         }
+            sortItems();
     }
-        private boolean checkItemsInList(String item){
-        return groceryList.contains(item);
+        public static boolean checkItemsInList(String item){
+            return groceryList.contains(item);
         }
-        private void removeItems(String itemsToRemove) {
+        public static void removeItems(String itemsToRemove) {
             String[] splitItems = itemsToRemove.split(",");
             for (String item : splitItems) {
                 item = item.trim();
 
                 if (checkItemsInList(item)) {
                     groceryList.remove(item);
+
                 } else {
-                    System.out.println("boyle bir urun listede yok" + item);
+                    System.out.println("boyle bir urun listede yok" +" " + item);
                 }
 
             }
+            sortItems();
         }
 
-        public static void printToSorted(){
+        public static void printSorted(){
             sortItems();
             System.out.println("Mevcut liste");
             for(String item:groceryList){
@@ -74,7 +89,7 @@ public class Grocery {
             }
         }
 
-        private static void sortItems(){
+        public static void sortItems(){
             Collections.sort(groceryList);
         }
     }
